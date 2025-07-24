@@ -509,6 +509,19 @@ async def start_training_task(task: TrainerProxyRequest, local_repo_path: str):
                     path_in_repo=path_in_repo,
                 )
                 await log_task(training_data.task_id, task.hotkey, "Repo uploaded successfully.")
+                # Set repo visibility to public after upload
+                from huggingface_hub import HfApi
+                huggingface_username = os.getenv("HUGGINGFACE_USERNAME")
+                huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
+                expected_repo_name = training_data.expected_repo_name
+                repo_id = f"{huggingface_username}/{expected_repo_name}"
+                hf_api = HfApi(token=huggingface_token)
+                try:
+                    hf_api.update_repo_settings(repo_id=repo_id, private=False)
+                    logger.info(f"Successfully made repository {repo_id} public")
+                except Exception as e:
+                    logger.error(f"Failed to update repo visibility for {repo_id}: {e}")
+
             except Exception as upload_err:
                 log_message = f"[ERROR] Upload container failed | ExitCode: Unknown | LastError: {upload_err}"
                 await log_task(training_data.task_id, task.hotkey, log_message)

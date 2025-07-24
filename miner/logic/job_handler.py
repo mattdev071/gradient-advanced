@@ -390,7 +390,7 @@ def _create_docker_entrypoint(job):
         grpo_command = f"""
     echo "Moving specific reward function file to src directory..." && \
     cp ${{CONFIG_DIR}}/{reward_file} /workspace/axolotl/src/"""
-        setup_commands += " && \" + grpo_command
+        setup_commands += " && " + grpo_command
 
     # Use deepspeed for distributed training on 8 GPUs
     training_command = """
@@ -499,10 +499,11 @@ def start_tuning_container(job: TextJob):
 
     finally:
         repo = config.get("hub_model_id", None)
-        if repo:
-            hf_api = HfApi(token=cst.HUGGINGFACE_TOKEN)
-            hf_api.update_repo_visibility(repo_id=repo, private=False, token=cst.HUGGINGFACE_TOKEN)
-            logger.info(f"Successfully made repository {repo} public")
+        # Removed update_repo_visibility call from here; should be called after upload step when repo is guaranteed to exist.
+        # if repo:
+        #     hf_api = HfApi(token=cst.HUGGINGFACE_TOKEN)
+        #     hf_api.update_repo_visibility(repo_id=repo, private=False, token=cst.HUGGINGFACE_TOKEN)
+        #     logger.info(f"Successfully made repository {repo} public")
 
         if "container" in locals():
             try:
