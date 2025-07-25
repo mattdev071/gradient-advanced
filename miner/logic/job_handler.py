@@ -395,7 +395,7 @@ def _create_docker_entrypoint(job):
     # Use deepspeed for distributed training on 8 GPUs
     training_command = """
     echo 'Starting training command' && \
-    deepspeed --num_gpus 8 -m axolotl.cli.train ${CONFIG_DIR}/${JOB_ID}.yml
+    deepspeed --num_gpus 8 axolotl.cli.train ${CONFIG_DIR}/${JOB_ID}.yml
     """
 
     return setup_commands + " && \\" + training_command

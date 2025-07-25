@@ -172,10 +172,12 @@ def run_training(config_path):
     training_env["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
     training_env["HF_HUB_DISABLE_TELEMETRY"] = "1"
 
+    # FIX: Use the correct axolotl training command
+    # Since we're in the axolotl container, use the module directly with accelerate
     training_command = [
-    "accelerate", "launch",
-    "-m", "axolotl.cli.train",
-    config_path
+        "accelerate", "launch",
+        "axolotl.cli.train",  # Use the axolotl CLI module directly
+        config_path
     ]
 
     try:

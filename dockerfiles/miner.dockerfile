@@ -20,3 +20,5 @@ ENV AWS_SECRET_ACCESS_KEY=02e398474b783af6ded4c4638b5388ceb8079c83bb2f8233d5bcef
 RUN mkdir -p /root/.aws && \
     echo "[default]\naws_access_key_id=dummy_access_key\naws_secret_access_key=dummy_secret_key" > /root/.aws/credentials && \
     echo "[default]\nregion=us-east-1" > /root/.aws/config
+
+COPY core/config/ds_config.json /workspace/axolotl/ds_config.json

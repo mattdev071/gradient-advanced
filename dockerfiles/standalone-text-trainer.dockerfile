@@ -23,6 +23,7 @@ COPY trainer /workspace/trainer
 COPY scripts /workspace/scripts
 COPY core/config/base.yml /workspace/axolotl/base.yml
 COPY core/config/base_grpo.yml /workspace/axolotl/base_grpo.yml
+COPY core/config/ds_config.json /workspace/axolotl/ds_config.json
 
 RUN python3 /workspace/core/manual_reward_funcs.py
 
